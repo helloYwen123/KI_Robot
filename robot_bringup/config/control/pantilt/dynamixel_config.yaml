@@ -1,0 +1,4 @@
+port: $(arg port)
+dynamixel_info: $(arg file)
+baud_rate: $(arg baud_rate)
+control_frequency: 50.0

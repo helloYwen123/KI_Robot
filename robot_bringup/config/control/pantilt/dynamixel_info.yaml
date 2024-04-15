@@ -1,0 +1,12 @@
+robot_pantilt_pan_joint:
+  # hardware ID of the actuator
+  ID: 1
+  # velocity, position
+  control_mode: position
+  spin: 1
+robot_pantilt_tilt_joint:
+  # hardware ID of the actuator
+  ID: 2
+  # velocity, position
+  control_mode: position
+  spin: 1  

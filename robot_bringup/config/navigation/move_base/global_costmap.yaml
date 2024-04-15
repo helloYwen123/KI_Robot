@@ -1,0 +1,35 @@
+global_costmap:
+  global_frame: $(arg global_frame)
+  robot_base_frame: $(arg base_frame)
+  update_frequency: 5.0
+  publish_frequency: 1.0
+  rolling_window: false
+  width:  100.0
+  height: 100.0
+  resolution: 0.05
+
+  plugins:
+    - name: static_map
+      type: "costmap_2d::StaticLayer"
+    - name: obstacle_laser_layer_1_2
+      type: "costmap_2d::ObstacleLayer"
+    - name: inflation_layer
+      type: "costmap_2d::InflationLayer"
+
+  static_map:
+    enabled: true
+    lethal_cost_threshold: 94
+    static_map: true
+    map_topic: map
+    unknown_cost_value: 1
+    trinary_costmap: false
+    use_maximum: false
+
+# Updated on common_costmap.yaml
+#  inflation_layer:
+#    enabled: true
+#    cost_scaling_factor: 10.0 # the lower, the more cost
+#    inflation_radius: 0.9 # big values make it harder to pass through narrow spaces
+
+  obstacle_laser_layer_1_2:
+    enabled: true

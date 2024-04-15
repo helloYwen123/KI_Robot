@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot name="pantilt" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <xacro:macro name="solid_cuboid_inertia" params="m h d w">
+      <inertia  ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0"
+                iyy="${(m*(w*w+d*d))/12}" iyz = "0"
+                izz="${(m*(w*w+h*h))/12}"
+      /> 
+    </xacro:macro>
+
+  <xacro:macro name="pantilt" params="prefix parent hq:=false *origin">
+
+    <joint name="${prefix}_base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}"/>
+      <child link="${prefix}_base_link"/>
+    </joint>
+ 
+    <link name="${prefix}_base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.01 0.01" />
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.01" length="0.01"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.005" />
+        <origin xyz="0 0 0" />
+        <solid_cuboid_inertia m="0.005" h="0.05" d="0.05" w="0.05"/>
+      </inertial>
+    </link>
+    
+    <joint name="${prefix}_pan_joint" type="revolute">
+      <parent link="${prefix}_base_link"/>
+      <child link="${prefix}_pan_link"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-0.95" upper="0.95" effort="100" velocity="50"/>
+      <joint_properties friction="0.01" damping="0.01"/>
+    </joint>
+	
+    <transmission name="${prefix}_pan_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${prefix}_pan_joint">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${prefix}_pan_motor">
+          <mechanicalReduction>1</mechanicalReduction>
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </actuator>
+    </transmission>
+      
+    <link name="${prefix}_pan_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/devices/pan_dynamixel.stl"/>
+        </geometry>
+        <material name="lightgrey">
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1" />
+        <origin xyz="0 0 0" />
+        <solid_cuboid_inertia m="1" h="0.1" d="0.1" w="0.1"/>
+      </inertial>
+    </link>
+    
+    <!-- TILT JOINT/LINK -->
+    <joint name="${prefix}_tilt_joint" type="revolute">
+      <origin xyz="0.0 0.0 0.08305" rpy="0 0 0"/> <!-- Check -->
+      <parent link="${prefix}_pan_link"/>
+      <child link="${prefix}_tilt_link"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-0.26" upper="0.26" effort="100" velocity="5"/>
+      <joint_properties friction="0.01" damping="0.01"/>
+    </joint>
+	
+	<transmission name="${prefix}_tilt_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_tilt_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_tilt_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </actuator>
+    </transmission>
+    
+    <link name="${prefix}_tilt_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/devices/tilt_dynamixel.stl"/>
+        </geometry>
+       <material name="lightgrey">
+         <color rgba="0.3 0.3 0.3 1"/>
+       </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.1" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1" />
+        <origin xyz="0 0 0" />
+        <solid_cuboid_inertia m="1" h="0.1" d="0.1" w="0.1"/>
+      </inertial>
+    </link>
+
+  </xacro:macro>
+</robot>

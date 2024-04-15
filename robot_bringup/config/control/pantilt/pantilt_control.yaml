@@ -1,0 +1,10 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50  
+pantilt_pan_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg prefix)pantilt_pan_joint
+pantilt_tilt_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg prefix)pantilt_tilt_joint
+  

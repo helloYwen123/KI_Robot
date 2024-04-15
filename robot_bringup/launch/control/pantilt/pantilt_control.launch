@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="prefix" default="robot_" />
+  <arg name="port" default="/dev/ttyUSB0" />
+  <arg name="baud_rate" default="115200" />
+  <arg name="file" default="$(find robot_bringup)/config/control/pantilt/dynamixel_info.yaml" />
+  <arg name="namespace" default="pantilt" />
+  
+	
+  <group ns="$(arg namespace)">
+
+  <!-- Dynamixel Workbench based hardware driver -->
+  <node pkg="dynamixel_workbench_ros_control" type="dynamixel_controller_manager_node" name="dynamixel_controller_manager_node">
+	  <rosparam file="$(find robot_bringup)/config/control/pantilt/dynamixel_config.yaml" subst_value="true"/>
+  </node>
+
+  <rosparam command="load" file="$(find robot_bringup)/config/control/pantilt/pantilt_control.yaml" subst_value="true"/>
+
+  <node name="pantilt_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+  pantilt_pan_controller
+  pantilt_tilt_controller
+  joint_state_controller
+  "/>
+
+   </group>
+
+  <!-- It is necessary to republish the pantilt/joint_states to joint_states for using RVIZ -->
+  <node name="joint_state_publisher_pantilt" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <rosparam command="load" file="$(find robot_bringup)/config/control/pantilt/republished_joint_states.yaml" subst_value="true"/>   
+  </node>
+
+
+
+</launch>

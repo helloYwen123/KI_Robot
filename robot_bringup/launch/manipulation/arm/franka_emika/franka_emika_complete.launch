@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
+
+  <arg name="model" default="$(optenv ROBOT_ARM_MODEL panda)"/>
+  <arg name="ip_address"  default="$(optenv ROBOT_ARM_IP 192.168.0.210)"/>
+  <arg name="reverse_port" default="50001" doc="Not used for Franka Emika arms."/>
+  <arg name="script_sender_port" default="50002" doc="Not used for Franka Emika arms."/>
+  <arg name="namespace"  default="arm"/>
+  <arg name="run_traj_control"  default="$(optenv ROBOT_ARM_ENABLE_TRAJECTORY_CONTROL false)"/> <!-- If this is true trajectory controller will be loaded and some polyscope functionalities like freedrive won't be available, if it is false just the joint states will be published -->
+
+  <arg name="state_controller" default="franka_state_controller"/>
+  <!-- Set position or effort controller, but they are incompatible at the same time -->
+  <arg unless="$(arg run_traj_control)" name="controllers" default="position_joint_trajectory_controller"/>
+  <arg if="$(arg run_traj_control)" name="controllers" default="effort_joint_trajectory_controller"/>
+  
+  <rosparam ns="$(arg namespace)" command="load" file="$(find robot_bringup)/config/manipulation/arm/franka_emika/default_controllers.yaml" subst_value="true"/>
+
+  <node name="franka_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+  --namespace $(arg namespace)
+  $(arg state_controller)
+  $(arg controllers)"/>
+
+  <group ns="$(arg namespace)">
+
+
+    <node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" respawn="true">
+      <rosparam command="load" file="$(find robot_bringup)/config/manipulation/arm/franka_emika/control_node.yaml" subst_value="true"/>
+      <remap from="franka_state_controller/joint_states"         to="joint_states"/>
+      <remap from="franka_state_controller/joint_states_desired" to="joint_states_desired"/>
+    </node>
+
+    
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+  </group>
+
+  <!-- It is necessary to republish the arm/joint_states to joint_states for using MoveIt -->
+  <node name="joint_state_publisher_arm" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <rosparam command="load" file="$(find robot_bringup)/config/manipulation/arm/franka_emika/republished_joint_states.yaml" subst_value="true"/>   
+  </node>
+  
+  
+</launch>

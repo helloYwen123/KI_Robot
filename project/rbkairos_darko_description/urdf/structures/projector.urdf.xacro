@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot name="structure" xmlns:xacro="http://www.ros.org/wiki/xacro">
+        
+  <xacro:macro name="projector" params="prefix parent *origin">
+
+    <joint name="${prefix}_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+    </joint>
+
+    <link name="${prefix}_link">
+      <visual>
+        <material name="black_metal">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/devices/projector.stl"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/devices/projector.stl"/>
+        </geometry>
+      </collision>
+    </link>
+      
+  </xacro:macro>
+
+</robot>
+
+
+

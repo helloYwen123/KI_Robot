@@ -1,0 +1,6 @@
+robotnik_map:
+  global_frame: robot_map
+  maps_package: robot_bringup
+  maps:
+    localization: maps/robotnik_map/robotnik_map.yaml
+    routes: maps/robotnik_map/robotnik_map.yaml

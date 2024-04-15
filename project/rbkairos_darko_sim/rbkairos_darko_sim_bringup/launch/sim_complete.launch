@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- arg to config the launch file-->
+  <!-- GPS default position of Robotnik at Fuente del Jarro-->
+
+  <arg name="launch_rviz" default="true"/>
+  <arg name="gazebo_world" default="$(find summit_xl_gazebo)/worlds/summit_xl_office.world"/>
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="omni_drive" default="false"/>
+  <arg if="$(arg omni_drive)" name="ros_planar_move_plugin" value="true"/>
+  <arg unless="$(arg omni_drive)" name="ros_planar_move_plugin" default="true"/>
+  <arg name="use_gpu_for_simulation" default="$(optenv USE_GPU_FOR_SIMULATION false)"/>
+
+  <!-- arguments robot -->
+  <arg name="id_robot" default="robot"/>
+  <arg name="xacro_robot" default="rbkairos_panda_plus.urdf.xacro"/>
+  <arg name="gps_latitude_robot" default="39.5080331"/>
+  <arg name="gps_longitude_robot" default="-0.4619816"/>
+  <!-- arm robot -->
+  <arg name="launch_arm" default="true"/>
+  <arg name="arm_manufacturer" default="franka"/>
+  <arg name="arm_model" default="panda"/>
+  <arg name="launch_moveit" default="false"/>
+
+  <include file="$(find rbkairos_darko_gazebo)/launch/rbkairos_gazebo.launch">
+    <!-- general args -->
+    <arg name="launch_rviz" value="$(arg launch_rviz)"/>
+    <arg name="gazebo_world" value="$(arg gazebo_world)"/>
+    <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    <arg name="omni_drive" value="$(arg omni_drive)"/>
+    <arg name="ros_planar_move_plugin" value="$(arg ros_planar_move_plugin)"/>
+    <arg name="use_gpu_for_simulation" value="$(arg use_gpu_for_simulation)"/>
+    <!-- robot args -->
+    <arg name="id_robot" value="$(arg id_robot)"/>
+    <arg name="xacro_robot" value="$(arg xacro_robot)"/>
+    <arg name="gps_latitude_robot" value="$(arg gps_latitude_robot)"/>
+    <arg name="gps_longitude_robot" value="$(arg gps_longitude_robot)"/>
+    <!-- arm args -->
+    <arg name="launch_arm" value="$(arg launch_arm)"/>
+    <arg name="arm_manufacturer" value="$(arg arm_manufacturer)"/>
+    <arg name="arm_model" value="$(arg arm_model)"/>
+    <arg name="launch_moveit" value="$(arg launch_moveit)"/>
+  </include>
+
+
+</launch>

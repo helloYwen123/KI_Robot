@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+  <launch>
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg id_robot)_"/>
+
+  <arg name="namespace" default="gripper"/>
+
+  <arg name="ip_address" default="192.168.0.200"/>
+  <arg name="port" default="50000"/>
+
+  <arg name="min_pos" default="1"/>
+  <arg name="max_pos" default="39"/>
+
+  <arg name="gripper_id" default="1"/>
+  <!--PGE-Series : PGE   
+      PGC-Series : PGC
+      CGC-Series : CGC
+      AG95 Modbus : AG95_MB
+      AG95 CAN    : AG95_CAN
+      DH3         : DH3
+      RGI-Series  : RGI
+  -->
+  <arg name="gripper_model" default="DH3"/>
+  <arg name="port" default="/dev/ttyACM0"/>
+  <arg name="baudrate" default="115200"/>
+  <arg name="tf_prefix" default="$(arg prefix)gripper_"/>
+
+
+
+  <node pkg="dh_gripper_driver" type="dh_gripper_driver" name="dh_gripper_driver" respawn="true" output="screen">
+      <param name="Gripper_ID" type="string" value="$(arg gripper_id)" />
+      <param name="Gripper_Model" type="string" value="$(arg gripper_model)" />
+      <param name="Connect_port" type="string" value="$(arg port)" />
+      <param name="BaudRate"  type="string" value="$(arg baudrate)" />
+      <param name="Tf_prefix"  type="string" value="$(arg tf_prefix)" />
+
+      <remap from="/gripper/ctrl" to="$(arg namespace)/ctrl"/>
+      <remap from="/gripper/joint_states" to="$(arg namespace)/joint_states"/>
+      <remap from="/gripper/rot_ctrl" to="$(arg namespace)/rot_ctrl"/>
+      <remap from="/gripper/rot_states" to="$(arg namespace)/rot_states"/>
+      <remap from="/gripper/states" to="$(arg namespace)/states"/>
+  </node>
+  
+  <!-- It is necessary to republish the gripper/joint_states to joint_states for using MoveIt -->
+  <node name="joint_state_publisher_gripper" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <rosparam command="load" file="$(find robot_bringup)/config/manipulation/gripper/dh3/republished_joint_states.yaml" subst_value="true"/>   
+  </node>
+
+
+
+
+</launch>

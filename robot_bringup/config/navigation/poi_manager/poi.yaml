@@ -1,0 +1,167 @@
+environments:
+  map1:
+    points:
+      p0:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.8597521352129474
+        - 0.5107115291402554
+        params: ''
+        position:
+        - -0.9486175318220761
+        - -1.4409284093462358
+        - 0.2
+      p1:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.24937953641115473
+        - 0.9684058275430594
+        params: ''
+        position:
+        - 0.6991041535173321
+        - -2.3077882548053186
+        - 0.2
+      p2:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.8592894416237262
+        - 0.5114896436038415
+        params: ''
+        position:
+        - 0.04535041284897695
+        - 0.5010822877454593
+        - 0.2
+  robotnik_map:
+    points:
+      p0:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.0
+        params: ''
+        position:
+        - 0.0
+        - 0.0
+        - 0.2
+  test:
+    points:
+      p0:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.0
+        params: ''
+        position:
+        - 2.967692748154419
+        - -0.038571452802860354
+        - 0.2
+      p1:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.0
+        params: ''
+        position:
+        - 1.1554752946715259
+        - 0.8873699989132624
+        - 0.2
+      p2:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.9814892184733544
+        - 0.1915173987411174
+        params: ''
+        position:
+        - 1.042216266813973
+        - 0.057883436678866286
+        - 0.2
+      p3:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.9998564712277842
+        - 0.016942164676437138
+        params: ''
+        position:
+        - 2.0527099234757498
+        - 0.02126465823232635
+        - 0.2
+  test1:
+    points:
+      p0:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.6507420310990962
+        - -0.7592988930329236
+        params: ''
+        position:
+        - -1.2756407596875565
+        - -0.19716489906497392
+        - 0.2
+      p1:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - -0.7655906559166711
+        - -0.6433280248621862
+        params: ''
+        position:
+        - -0.8624923059976177
+        - 1.3592069930033919
+        - 0.2
+      p2:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.041288494138353504
+        - 0.9991472665487242
+        params: ''
+        position:
+        - 1.7645189688260892
+        - 0.6695488982634814
+        - 0.2
+  willow_garage:
+    points:
+      p0:
+        frame_id: robot_map
+        orientation:
+        - 7.932998382486213e-09
+        - -1.3097467960495983e-06
+        - 0.7151601237080768
+        - 0.6989606551560199
+        params: ''
+        position:
+        - 1.021265865323815
+        - 2.9974638245206524
+        - 0.2
+      p1:
+        frame_id: robot_map
+        orientation:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.0
+        params: ''
+        position:
+        - 2.501677742308101
+        - -2.0412498227903786
+        - 0.2

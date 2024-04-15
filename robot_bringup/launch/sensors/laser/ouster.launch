@@ -1,0 +1,68 @@
+<launch>
+  <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+  <arg name="prefix" default="$(arg id_robot)_" />
+  <arg name="angle_min"  default=""/> <!-- not used -->
+  <arg name="angle_max"  default=""/> <!-- not used -->
+
+  <arg name="port" default="" /> <!-- not used -->
+  <arg name="node_name" default="ouster" />
+  <arg name="scan_topic" default="points" />
+  <arg name="ip_address" default="192.168.1.10" />
+  <arg name="frame_id" default="$(arg prefix)_link" />
+
+  <arg name="udp_dest" default="192.168.0.200" doc="hostname or IP where the sensor will send data packets"/>
+  <arg name="lidar_port" default="0" doc="port to which the sensor should send lidar data"/>
+  <arg name="imu_port" default="0" doc="port to which the sensor should send imu data"/>
+  <arg name="replay" default="false" doc="do not connect to a sensor; expect /os_node/{lidar,imu}_packets from replay"/>
+  <arg name="lidar_mode" default="" doc="resolution and rate: either 512x10, 512x20, 1024x10, 1024x20, or 2048x10"/>
+  <arg name="timestamp_mode" default="" doc="method used to timestamp measurements: TIME_FROM_INTERNAL_OSC, TIME_FROM_SYNC_PULSE_IN, TIME_FROM_PTP_1588"/>
+  <arg name="metadata" default="$(optenv HOME)/test.json" doc="path to read or write metadata file when replaying or receiving sensor data, respectively"/>
+  <arg name="udp_profile_lidar" default="" doc="lidar packet profile: LEGACY, RNG19_RFL8_SIG16_NIR16_DUAL"/>
+
+  <node pkg="ouster_ros" name="$(arg node_name)_node" type="os_node" output="screen" required="true">
+    <param name="~/lidar_mode" type="string" value="$(arg lidar_mode)"/>
+    <param name="~/timestamp_mode" type="string" value="$(arg timestamp_mode)"/>
+    <param name="~/replay" value="$(arg replay)"/>
+    <param name="~/sensor_hostname" value="$(arg ip_address)"/>
+    <param name="~/udp_dest" value="$(arg udp_dest)"/>
+    <param name="~/lidar_port" value="$(arg lidar_port)"/>
+    <param name="~/imu_port" value="$(arg imu_port)"/>
+    <param name="~/metadata" value="$(arg metadata)"/>
+    <param name="~/udp_profile_lidar" value="$(arg udp_profile_lidar)"/>
+  </node>
+
+  <node pkg="ouster_ros" type="os_cloud_node" name="$(arg node_name)" output="screen" required="true">
+    <remap from="~/os_config" to="$(arg node_name)_node/os_config"/>
+    <remap from="~/lidar_packets" to="$(arg node_name)_node/lidar_packets"/>
+    <remap from="~/imu_packets" to="$(arg node_name)_node/imu_packets"/>
+    <param name="~/frame_id" value="$(arg frame_id)"/>
+  </node>
+
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+
+     <remap from="cloud_in" to="$(arg scan_topic)"/>
+     <remap from="scan" to="scan"/>
+     <param name="target_frame" value="$(arg prefix)base_footprint"/>
+     <rosparam>
+       transform_tolerance: 0.01
+       min_height: 0.1
+       max_height: 1.0
+
+       angle_min: -3.14 # -M_PI/2
+       angle_max: 3.14 # M_PI/2
+       angle_increment: 0.0087 # M_PI/360.0
+       scan_time: 0.3333
+       range_min: 0.45
+       range_max: 50.0
+       use_inf: true
+
+       # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+       # 0 : Detect number of cores
+       # 1 : Single threaded
+       # 2->inf : Parallelism level
+       concurrency_level: 1
+     </rosparam>
+   </node>
+
+
+</launch>

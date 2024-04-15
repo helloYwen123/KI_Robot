@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot name="structure" xmlns:xacro="http://www.ros.org/wiki/xacro">
+        
+  <xacro:macro name="telescopic_pole" params="prefix parent *origin pole_height:=0.0">
+
+    <joint name="${prefix}_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+    </joint>
+
+    <link name="${prefix}_link">
+      <visual>
+        <material name="black_metal">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/structures/pole_base.stl"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/structures/pole_base.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    
+    <joint name="${prefix}_sup_joint" type="fixed">
+      <origin xyz="0.0 -0.023 ${pole_height}" rpy="0.0 0 3.14"/>
+      <parent link="${prefix}_link"/>
+      <child link="${prefix}_sup_link"/>
+    </joint>
+
+    <link name="${prefix}_sup_link">
+      <visual>
+        <material name="black_metal">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/structures/pole_sup.stl"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0"/>
+        <geometry>
+          <mesh filename="package://rbkairos_darko_description/meshes/structures/pole_sup.stl"/>
+        </geometry>
+      </collision>
+    </link>
+      
+  </xacro:macro>
+
+</robot>
+
+
+

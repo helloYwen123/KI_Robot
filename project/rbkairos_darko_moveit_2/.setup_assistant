@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: rbkairos_darko_description
+    relative_path: robots/rbkairos_panda_plus.urdf.xacro
+    xacro_args: " prefix:=robot_ hq:=true publish_bf:=true"
+  SRDF:
+    relative_path: config/rbkairos.srdf
+  CONFIG:
+    author_name: Robert Vasquez Zavaleta
+    author_email: rvasquez@robotnik.es
+    generated_timestamp: 1649085804
