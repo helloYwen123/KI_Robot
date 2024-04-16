@@ -1,0 +1,1 @@
+/home/robot/catkin_ws/src/rbkairos_darko_packages/robot_bringup/scripts/bringup.sh
