@@ -72,4 +72,3 @@ sudo apt-get install libk4a1.4* k4a-tools
 ```bash
 cd /etc/udev/rules.d/ && sudo wget https://raw.githubusercontent.com/microsoft/Azure-Kinect-Sensor-SDK/develop/scripts/99-k4a.rules
 ```
-# KI_Robot
